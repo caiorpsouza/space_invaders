@@ -21,7 +21,7 @@ explosoes = []
 
 def play():
     #Controle de FPS
-    fps_controller = time.time()
+    fps_controller = 0
     fps = 0
     contador_fps = 0
 
@@ -36,6 +36,10 @@ def play():
 
     while True:
         background.draw()
+        #Loops dos tiros
+        tempo = tiros_loop(nave, tiros, tempo)
+        abate_monstros(matriz_de_monstros, tiros, explosoes)
+        atualizar_explosoes(explosoes)
         #Loops dos monstros
         em_combate = monsters_combat(matriz_de_monstros, nave, em_combate)
         if em_combate:
@@ -50,16 +54,13 @@ def play():
         #Loop da nave
         nave_loop(nave)
 
-        #Loops dos tiros
-        tempo = tiros_loop(nave, tiros, tempo)
-        abate_monstros(matriz_de_monstros, tiros, explosoes)
-        atualizar_explosoes(explosoes)
 
         
         #Escrever o FPS na tela
         contador_fps += 1
-        if time.time() - fps_controller >= 1:
-            fps_controller = time.time()
+        fps_controller += config.janela.delta_time()
+        if  fps_controller >= 1:
+            fps_controller = 0
             fps = contador_fps
             contador_fps = 0
         config.janela.draw_text(f"FPS: {fps}", 20, 20, tamanho=20, cor=(255,255,255), fonte="Arial")

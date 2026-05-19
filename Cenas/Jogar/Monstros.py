@@ -29,23 +29,30 @@ def desce_monstros(monstros, lado, monstro_vel):
 
 
 def monstros_loop(monstros, monstro_vel, inverte):
-    for linha in monstros:
-        for monstro in linha:
-            #Inversão do movimento de cada monstro
-            if monstro.x + monstro.width >= config.janela.largura*39/40:
-                inverte = True
-                desce_monstros(monstros, 'right', monstro_vel)
-            if monstro.x <= config.janela.largura/40:
-                desce_monstros(monstros, 'left', monstro_vel)
-                inverte = False
-            #Movimentação de cada monstro
-            if inverte:
-                monstro.x += monstro_vel * config.janela.delta_time() * -1
+    if monstros == []:
+        monstros = False
+        return
+    else:
+        for linha in monstros:
+            if linha == []:
+                monstros.remove(linha)
             else:
-                monstro.x += monstro_vel * config.janela.delta_time()
-            
-            monstro.update()
-            monstro.draw()
+                for monstro in linha:
+                    #Inversão do movimento de cada monstro
+                    if monstro.x + monstro.width >= config.janela.largura*39/40:
+                        inverte = True
+                        desce_monstros(monstros, 'right', monstro_vel)
+                    if monstro.x <= config.janela.largura/40:
+                        desce_monstros(monstros, 'left', monstro_vel)
+                        inverte = False
+                    #Movimentação de cada monstro
+                    if inverte:
+                        monstro.x += monstro_vel * config.janela.delta_time() * -1
+                    else:
+                        monstro.x += monstro_vel * config.janela.delta_time()
+                    
+                    monstro.update()
+                    monstro.draw()
     return inverte
 
 def monsters_combat(monstros, nave, em_combate):
